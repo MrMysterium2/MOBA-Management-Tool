@@ -1,39 +1,75 @@
--- Zeichen nicht länger als 20 
--- Spielername und Spiel position ('Top', 'Mid', 'Jungle', 'ADC', 'Support') NOT NULL
--- Teamname NOT NULL 
---  durchschnitts_elo FLOAT = Die ELO des Teams soll durch den Durschnitt der SpielerELO bestimmt werden
+-- DOKUMENATION 
+-- DATENBANK ERSTELLEN 
 
+CREATE DATABASE moba_team_management;
+USE moba_team_management;
+
+--Tabelle spieler erstellen
 CREATE TABLE spieler (
     id INT AUTO_INCREMENT PRIMARY KEY,
     spielername VARCHAR(20) NOT NULL,
-    vorname VARCHAR(20),
-    nachname VARCHAR(20),
-    email VARCHAR(20),
+    vorname VARCHAR(20) NOT NULL,
+    nachname VARCHAR(20) NOT NULL,
+    email VARCHAR(20) NOT NULL,
     position ENUM('Top', 'Mid', 'Jungle', 'ADC', 'Support') NOT NULL,
-    elo INT DEFAULT 1200
+    elo INT DEFAULT 1000
 );
 
+-- Tabelle team erstellen
 CREATE TABLE team (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    teamname VARCHAR(20) NOT NULL,
-    durchschnitts_elo FLOAT
+    name VARCHAR(20) NOT NULL,
+    team_elo INT DEFAULT 0
 );
 
-CREATE TABLE team_spieler (
+--  Tabelle team_members erstellen
+CREATE TABLE team_members (
     team_id INT,
     spieler_id INT,
-    PRIMARY KEY (team_id, spieler_id),
     FOREIGN KEY (team_id) REFERENCES team(id),
-    FOREIGN KEY (spieler_id) REFERENCES spieler(id)
+    FOREIGN KEY (spieler_id) REFERENCES spieler(id),
+    PRIMARY KEY (team_id, spieler_id)
 );
 
+-- Tabelle matchmaking erstellen
 CREATE TABLE matchmaking (
     id INT AUTO_INCREMENT PRIMARY KEY,
     spieler1_id INT,
     spieler2_id INT,
     winner_id INT,
-    datum DATETIME,
+    datum DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (spieler1_id) REFERENCES spieler(id),
     FOREIGN KEY (spieler2_id) REFERENCES spieler(id),
     FOREIGN KEY (winner_id) REFERENCES spieler(id)
 );
+
+-- Tabelle team_matchmaking erstellen
+CREATE TABLE team_matchmaking (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    team1_id INT,
+    team2_id INT,
+    winner_id INT,
+    datum DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (team1_id) REFERENCES team(id),
+    FOREIGN KEY (team2_id) REFERENCES team(id),
+    FOREIGN KEY (winner_id) REFERENCES team(id)
+);
+
+-- Verwalten 
+-- Einen neuen Spieler hinzufügen
+INSERT INTO spieler (spielername, vorname, nachname, email, position)
+VALUES ('MaxMustermann', 'Max', 'Mustermann', 'max@beispiel.de', 'Top');
+
+-- Ein neues Team erstellen
+INSERT INTO team (name, team_elo) VALUES ('Red Dragons', 1500);
+
+-- Einen Spieler einem Team zuweisen
+INSERT INTO team_members (team_id, spieler_id) VALUES (1, 1);
+
+-- Ein Match zwischen zwei Spielern erfassen
+INSERT INTO matchmaking (spieler1_id, spieler2_id, winner_id)
+VALUES (1, 2, 1);
+
+-- Ein Match zwischen zwei Teams erfassen
+INSERT INTO team_matchmaking (team1_id, team2_id, winner_id)
+VALUES (1, 2, 1);
