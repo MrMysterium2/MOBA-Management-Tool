@@ -1,4 +1,5 @@
 -- Dokumentation 
+-- /var/lib/mysql
 -- DATENBANK ERSTELLEN 
 
 CREATE DATABASE moba_team_management;
