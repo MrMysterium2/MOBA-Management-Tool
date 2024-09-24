@@ -1,0 +1,39 @@
+-- Zeichen nicht länger als 20 
+-- Spielername und Spiel position ('Top', 'Mid', 'Jungle', 'ADC', 'Support') NOT NULL
+-- Teamname NOT NULL 
+--  durchschnitts_elo FLOAT = Die ELO des Teams soll durch den Durschnitt der SpielerELO bestimmt werden
+
+CREATE TABLE spieler (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    spielername VARCHAR(20) NOT NULL,
+    vorname VARCHAR(20),
+    nachname VARCHAR(20),
+    email VARCHAR(20),
+    position ENUM('Top', 'Mid', 'Jungle', 'ADC', 'Support') NOT NULL,
+    elo INT DEFAULT 1200
+);
+
+CREATE TABLE team (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    teamname VARCHAR(20) NOT NULL,
+    durchschnitts_elo FLOAT
+);
+
+CREATE TABLE team_spieler (
+    team_id INT,
+    spieler_id INT,
+    PRIMARY KEY (team_id, spieler_id),
+    FOREIGN KEY (team_id) REFERENCES team(id),
+    FOREIGN KEY (spieler_id) REFERENCES spieler(id)
+);
+
+CREATE TABLE matchmaking (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    spieler1_id INT,
+    spieler2_id INT,
+    winner_id INT,
+    datum DATETIME,
+    FOREIGN KEY (spieler1_id) REFERENCES spieler(id),
+    FOREIGN KEY (spieler2_id) REFERENCES spieler(id),
+    FOREIGN KEY (winner_id) REFERENCES spieler(id)
+);
