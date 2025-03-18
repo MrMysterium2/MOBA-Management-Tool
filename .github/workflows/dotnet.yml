@@ -17,11 +17,11 @@ jobs:
       with:
         dotnet-version: 8.0.x
     - name: Restore dependencies
-      working-directory: .\MOBAmanagement.csproj
+      working-directory: \Code\MOBAmanagement.csproj
       run: dotnet restore
     - name: Build
-      working-directory: .\MOBAmanagement.csproj 
+      working-directory: \Code\MOBAmanagement.csproj
       run: dotnet build --no-restore
     - name: Test
-      working-directory: .\MOBAmanagement.csproj
+      working-directory: \Code\MOBAmanagement.csproj
       run: dotnet test --no-build --verbosity normal
