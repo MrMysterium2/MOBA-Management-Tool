@@ -17,8 +17,11 @@ jobs:
       with:
         dotnet-version: 8.0.x
     - name: Restore dependencies
-      run: dotnet restore MyProject.csproj
+      working-directory: ./src/MyProject  # Change directory to where the .csproj is located
+      run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore MyProject.csproj
+      working-directory: ./src/MyProject  # Build in the same directory
+      run: dotnet build --no-restore
     - name: Test
-      run: dotnet test --no-build --verbosity normal MyProject.csproj
+      working-directory: ./src/MyProject  # Run tests in the same directory
+      run: dotnet test --no-build --verbosity normal
