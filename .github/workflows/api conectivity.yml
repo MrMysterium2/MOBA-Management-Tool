@@ -1,0 +1,48 @@
+name: API and Frontend Connectivity Test
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  api-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Set up Node.js (if your frontend is using Node.js)
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      # Install dependencies for your frontend
+      - name: Install Frontend Dependencies
+        run: |
+          cd frontend
+          npm install
+
+      # Optionally, start the Swagger API in a Docker container (if applicable)
+      - name: Start Swagger API (Docker)
+        run: |
+          docker run -d -p 5187:80 your-docker-image # Replace with actual Docker image or command
+
+      # Wait for API to be fully up (optional sleep)
+      - name: Wait for API to be ready
+        run: sleep 10 # This waits for 10 seconds for the API to be ready (adjust as needed)
+
+      # Check if Swagger API is accessible
+      - name: Test Swagger API Connectivity
+        run: |
+          curl -X GET http://localhost:5187/your-endpoint # Replace with correct endpoint
+
+      # Optionally: Test frontend making requests to the API
+      - name: Test Frontend API Connectivity
+        run: |
+          cd frontend
+          npm run test-api # Assuming you have an API test set up in your frontend code
+
