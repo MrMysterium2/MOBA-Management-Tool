@@ -17,11 +17,11 @@ jobs:
       with:
         dotnet-version: 8.0.x
     - name: Restore dependencies
-      working-directory: ./src/MyProject  # Change directory to where the .csproj is located
+      working-directory: .\MOBAmanagement.csproj
       run: dotnet restore
     - name: Build
-      working-directory: ./src/MyProject  # Build in the same directory
+      working-directory: .\MOBAmanagement.csproj 
       run: dotnet build --no-restore
     - name: Test
-      working-directory: ./src/MyProject  # Run tests in the same directory
+      working-directory: .\MOBAmanagement.csproj
       run: dotnet test --no-build --verbosity normal
