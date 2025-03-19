@@ -3,7 +3,7 @@ name: API and Frontend Connectivity Test
 on:
   push:
     branches:
-      - main
+      - frontend-vue
 
 jobs:
   api-test:
@@ -23,7 +23,7 @@ jobs:
       # Install dependencies for your frontend
       - name: Install Frontend Dependencies
         run: |
-          cd frontend
+          cd moba-management-tool
           npm install
 
       # Optionally, start the Swagger API in a Docker container (if applicable)
